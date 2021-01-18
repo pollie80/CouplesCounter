@@ -8,6 +8,9 @@ package GUI;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,15 +28,31 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
+        //based off https://stackoverflow.com/questions/6084039/create-custom-operation-for-setdefaultcloseoperation
         WindowListener exitListener = new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
+                
                 int confirm = JOptionPane.showOptionDialog(
-                     null, "Are You Sure to Close Application?", 
-                     "Exit Confirmation", JOptionPane.YES_NO_OPTION, 
+                     null, "Are you sure to close this application?", 
+                     "Exit CouplesCounter", JOptionPane.YES_NO_OPTION, 
                      JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (confirm == 0) {
-                   System.exit(0);
+                    exitSave();
+                    System.exit(0);
+                }
+            }
+
+            private void exitSave() {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                //save data to data.txt based on https://stackoverflow.com/questions/9620683/java-fileoutputstream-create-file-if-not-exists
+                try {
+                    FileOutputStream fout = new FileOutputStream("Data/data.txt", false);
+                    //save data in format: score1 score2 name1 name2
+                    fout.write((person1Score + " " + person2Score + " \"" + person1ButtonTitle + "\" \"" + person2ButtonTitle + "\"").getBytes());
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };

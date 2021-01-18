@@ -11,6 +11,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
 /**
@@ -27,13 +28,16 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
+    
+    private MainFrame mainFrame;
 
     /**
      * Creates new form NameGettingOkCancelDialog
      */
-    public NameGettingOkCancelDialog(java.awt.Frame parent, boolean modal) {
+    public NameGettingOkCancelDialog(java.awt.Frame parent, boolean modal, MainFrame main) {
         super(parent, modal);
         initComponents();
+        mainFrame = main;
 
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -63,14 +67,22 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        person1Label = new javax.swing.JLabel();
+        person1TextField = new javax.swing.JTextField();
+        person2Label = new javax.swing.JLabel();
+        person2TextField = new javax.swing.JTextField();
+        newNamesLabel = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
+
+        jPanel1.setBackground(new java.awt.Color(153, 255, 153));
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -86,36 +98,97 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
             }
         });
 
+        person1Label.setLabelFor(person1TextField);
+        person1Label.setText("Name of person 1:");
+
+        person1TextField.setText("Alex");
+
+        person2Label.setLabelFor(person2TextField);
+        person2Label.setText("Name of person 2:");
+
+        person2TextField.setText("Jamie");
+        person2TextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                person2TextFieldActionPerformed(evt);
+            }
+        });
+
+        newNamesLabel.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 24)); // NOI18N
+        newNamesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        newNamesLabel.setText("New Names:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelButton)
+                .addGap(85, 85, 85))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(newNamesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(128, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(41, 41, 41)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(person1TextField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(person1Label, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(person2TextField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(person2Label, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGap(76, 76, 76)))
+        );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
+
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(newNamesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(okButton))
+                .addGap(57, 57, 57))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(115, 115, 115)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(person1Label)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(person1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(person2Label)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(person2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(144, Short.MAX_VALUE)))
+        );
+
+        getRootPane().setDefaultButton(okButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(250, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        getRootPane().setDefaultButton(okButton);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        mainFrame.setNewNames(person1TextField.getText(), person2TextField.getText());
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -129,6 +202,10 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
+
+    private void person2TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_person2TextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_person2TextFieldActionPerformed
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -166,7 +243,7 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NameGettingOkCancelDialog dialog = new NameGettingOkCancelDialog(new javax.swing.JFrame(), true);
+                NameGettingOkCancelDialog dialog = new NameGettingOkCancelDialog(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -180,7 +257,13 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel newNamesLabel;
     private javax.swing.JButton okButton;
+    private javax.swing.JLabel person1Label;
+    private javax.swing.JTextField person1TextField;
+    private javax.swing.JLabel person2Label;
+    private javax.swing.JTextField person2TextField;
     // End of variables declaration//GEN-END:variables
 
     private int returnStatus = RET_CANCEL;

@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tian
@@ -12,6 +14,7 @@ package GUI;
 public class MainFrame extends javax.swing.JFrame {
     
     private int person1Score = 0, person2Score = 0;
+    private String person1ButtonTitle = "Person 1 remembered", person2ButtonTitle = "Person 2 remembered";
 
     /**
      * Creates new form MainFrame
@@ -19,6 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         updateScore();
+        updateNamesOnGui();
     }
 
     /**
@@ -67,6 +71,11 @@ public class MainFrame extends javax.swing.JFrame {
         scoreLabel.setText("0 - 0");
 
         changeTitlesButton.setText("Change button titles");
+        changeTitlesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeTitlesButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -141,6 +150,13 @@ public class MainFrame extends javax.swing.JFrame {
         updateScore();
     }//GEN-LAST:event_person2JButtonActionPerformed
 
+    private void changeTitlesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeTitlesButtonActionPerformed
+        // TODO add your handling code here:
+        //show names getting frame here
+        NameGettingOkCancelDialog nameDialog = new NameGettingOkCancelDialog(this, true, this);
+        nameDialog.setVisible(true);
+    }//GEN-LAST:event_changeTitlesButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -188,5 +204,18 @@ public class MainFrame extends javax.swing.JFrame {
     private void updateScore() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         scoreLabel.setText(person1Score + " - " + person2Score);
+    }
+
+    private void updateNamesOnGui() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        person1JButton.setText(person1ButtonTitle);
+        person2JButton.setText(person2ButtonTitle);
+    }
+    
+    public void setNewNames(String title1, String title2){
+        person1ButtonTitle = title1;
+        person2ButtonTitle = title2;
+        
+        updateNamesOnGui();
     }
 }

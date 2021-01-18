@@ -5,6 +5,9 @@
  */
 package GUI;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +24,21 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        
+        WindowListener exitListener = new WindowAdapter() {
+
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showOptionDialog(
+                     null, "Are You Sure to Close Application?", 
+                     "Exit Confirmation", JOptionPane.YES_NO_OPTION, 
+                     JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0) {
+                   System.exit(0);
+                }
+            }
+        };
+        addWindowListener(exitListener);
+        
         updateScore();
         updateNamesOnGui();
     }
@@ -41,7 +59,7 @@ public class MainFrame extends javax.swing.JFrame {
         scoreLabel = new javax.swing.JLabel();
         changeTitlesButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(255, 105, 97));
 
         mainPanel.setBackground(new java.awt.Color(255, 105, 97));

@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -38,7 +41,6 @@ public class MainFrame extends javax.swing.JFrame {
 
             public void windowClosing(WindowEvent e) {
 
-                UIManager UI=new UIManager();
                 UIManager.put("OptionPane.background", new ColorUIResource(	174, 198, 207));
                 UIManager.getLookAndFeelDefaults().put("Panel.background", new ColorUIResource(	174, 198, 207));
 
@@ -79,7 +81,28 @@ public class MainFrame extends javax.swing.JFrame {
             person1Score = Integer.parseInt(scanner.next());
             person2Score = Integer.parseInt(scanner.next());
 
-            setNewNames(scanner.next().replace("\"", ""), scanner.next().replace("\"", ""));
+            StringBuilder name1 = new StringBuilder(scanner.next());
+            String nextWord = scanner.next();
+            if (name1.toString().length() - name1.toString().replaceAll("\"","").length() == 1){
+                System.out.println("more than 1 name for player 1");
+                name1.append(" ").append(nextWord);
+                while (!nextWord.contains("\"")){
+                    name1.append(" ").append(nextWord);
+                    nextWord = scanner.next();
+                }
+            }
+            StringBuilder name2 = new StringBuilder(nextWord);
+            if (name2.toString().length() - name2.toString().replaceAll("\"","").length() == 1){
+                System.out.println("more than 1 name for player 2");
+                nextWord = scanner.next();
+                name2.append(" ").append(nextWord);
+                while (!nextWord.contains("\"")){
+                    name2.append(" ").append(nextWord);
+                    nextWord = scanner.next();
+                }
+            }
+
+            setNewNames(name1.toString().replace("\"", ""), name2.toString().replace("\"", ""));
             scanner.close();
         }
 
@@ -103,10 +126,14 @@ public class MainFrame extends javax.swing.JFrame {
         scoreLabel = new javax.swing.JLabel();
         changeTitlesButton = new javax.swing.JButton();
         resetScoreButton = new javax.swing.JButton();
+        lastUpdatedLabel = new javax.swing.JLabel();
+        scoreLabel1 = new javax.swing.JLabel();
+        scoreLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("CouplesCounter");
         setBackground(new java.awt.Color(255, 105, 97));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("img/download.png"));
 
         mainPanel.setBackground(new java.awt.Color(255, 105, 97));
 
@@ -132,7 +159,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         scoreLabel.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 24)); // NOI18N
         scoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        scoreLabel.setText("0 - 0");
+        scoreLabel.setText("-");
 
         changeTitlesButton.setText("Change button titles");
         changeTitlesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -148,10 +175,40 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        lastUpdatedLabel.setText("Last updated: 10/10/1969");
+
+        scoreLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 24)); // NOI18N
+        scoreLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scoreLabel1.setText("0");
+        scoreLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scoreLabel1MouseClicked(evt);
+            }
+        });
+
+        scoreLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 24)); // NOI18N
+        scoreLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scoreLabel2.setText("0");
+        scoreLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scoreLabel2MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(changeTitlesButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(resetScoreButton)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lastUpdatedLabel)
+                .addContainerGap())
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(person1JButton, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
@@ -159,17 +216,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(person2JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(changeTitlesButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(resetScoreButton)))
-                .addContainerGap())
+                .addGap(127, 127, 127)
+                .addComponent(scoreLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scoreLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(mainPanelLayout.createSequentialGroup()
                     .addGap(97, 97, 97)
@@ -183,13 +236,18 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeTitlesButton)
                     .addComponent(resetScoreButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scoreLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scoreLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(person2JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(person1JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(73, 73, 73))
+                .addGap(32, 32, 32)
+                .addComponent(lastUpdatedLabel)
+                .addGap(27, 27, 27))
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(mainPanelLayout.createSequentialGroup()
                     .addGap(43, 43, 43)
@@ -211,18 +269,29 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void person1JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_person1JButtonActionPerformed
-        // TODO add your handling code here:
+        //increase and update score
         person1Score++;
-        updateScore();
+        scoreLabel1.setText(String.valueOf(person1Score));
+
+        //update updated label
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
+        lastUpdatedLabel.setText("Last updated: "+dateFormat.format(cal.getTime()));
     }//GEN-LAST:event_person1JButtonActionPerformed
 
     private void person2JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_person2JButtonActionPerformed
         // TODO add your handling code here:
         person2Score++;
-        updateScore();
+        scoreLabel2.setText(String.valueOf(person2Score));
+        
+        //update updated label
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
+        lastUpdatedLabel.setText("Last updated: "+dateFormat.format(cal.getTime()));
     }//GEN-LAST:event_person2JButtonActionPerformed
 
     private void changeTitlesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeTitlesButtonActionPerformed
@@ -239,6 +308,36 @@ public class MainFrame extends javax.swing.JFrame {
         
         updateScore();
     }//GEN-LAST:event_resetScoreButtonActionPerformed
+
+    private void scoreLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scoreLabel1MouseClicked
+        // TODO add your handling code here:
+        person1Score = getScore(1);
+        scoreLabel1.setText(String.valueOf(person1Score));
+    }//GEN-LAST:event_scoreLabel1MouseClicked
+
+    private void scoreLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scoreLabel2MouseClicked
+        // TODO add your handling code here:
+        person2Score = getScore(2);
+        scoreLabel2.setText(String.valueOf(person2Score));
+    }//GEN-LAST:event_scoreLabel2MouseClicked
+
+    private int getScore(int player){
+        SpinnerNumberModel sModel = new SpinnerNumberModel(0, 0, 30, 1);
+        JSpinner spinner = new JSpinner(sModel);
+
+        int option = JOptionPane.showOptionDialog(null, spinner, "Enter the new score for player "+player+":",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+        if (option == JOptionPane.CANCEL_OPTION)
+        {
+            // user hit cancel
+            if (player == 1)
+                return person1Score;
+            return person2Score;
+        }
+            // user entered a number
+            return (int) spinner.getValue();
+    }
 
     /**
      * @param args the command line arguments
@@ -277,17 +376,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton changeTitlesButton;
+    private javax.swing.JLabel lastUpdatedLabel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton person1JButton;
     private javax.swing.JButton person2JButton;
     private javax.swing.JButton resetScoreButton;
     private javax.swing.JLabel scoreLabel;
+    private javax.swing.JLabel scoreLabel1;
+    private javax.swing.JLabel scoreLabel2;
     private javax.swing.JLabel scoreTitleLabel;
     // End of variables declaration//GEN-END:variables
 
     private void updateScore() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        scoreLabel.setText(person1Score + " - " + person2Score);
+        scoreLabel1.setText(String.valueOf(person1Score));
+        scoreLabel2.setText(String.valueOf(person2Score));
     }
 
     private void updateNamesOnGui() {

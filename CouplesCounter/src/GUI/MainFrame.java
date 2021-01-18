@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -13,7 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -35,7 +37,11 @@ public class MainFrame extends javax.swing.JFrame {
         WindowListener exitListener = new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
-                
+
+                UIManager UI=new UIManager();
+                UIManager.put("OptionPane.background", new ColorUIResource(	174, 198, 207));
+                UIManager.getLookAndFeelDefaults().put("Panel.background", new ColorUIResource(	174, 198, 207));
+
                 int confirm = JOptionPane.showOptionDialog(
                      null, "Are you sure to close this application?", 
                      "Exit CouplesCounter", JOptionPane.YES_NO_OPTION, 

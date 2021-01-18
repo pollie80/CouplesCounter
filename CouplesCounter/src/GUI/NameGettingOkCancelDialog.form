@@ -140,6 +140,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Alex"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="person1TextFieldFocusGained"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="person2Label">
           <Properties>
@@ -154,7 +157,7 @@
             <Property name="text" type="java.lang.String" value="Jamie"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="person2TextFieldActionPerformed"/>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="person2TextFieldFocusGained"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="newNamesLabel">

@@ -103,14 +103,19 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
         person1Label.setText("Name of person 1:");
 
         person1TextField.setText("Alex");
+        person1TextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                person1TextFieldFocusGained(evt);
+            }
+        });
 
         person2Label.setLabelFor(person2TextField);
         person2Label.setText("Name of person 2:");
 
         person2TextField.setText("Jamie");
-        person2TextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                person2TextFieldActionPerformed(evt);
+        person2TextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                person2TextFieldFocusGained(evt);
             }
         });
 
@@ -210,9 +215,15 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void person2TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_person2TextFieldActionPerformed
+    private void person1TextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_person1TextFieldFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_person2TextFieldActionPerformed
+        person1TextField.selectAll();
+    }//GEN-LAST:event_person1TextFieldFocusGained
+
+    private void person2TextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_person2TextFieldFocusGained
+        // TODO add your handling code here:
+        person2TextField.selectAll();
+    }//GEN-LAST:event_person2TextFieldFocusGained
     
     private void doClose(int retStatus) {
         returnStatus = retStatus;

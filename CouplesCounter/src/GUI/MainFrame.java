@@ -9,8 +9,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private int person1Score = 0, person2Score = 0;
     private String person1ButtonTitle = "Person 1 remembered", person2ButtonTitle = "Person 2 remembered";
+    private final String PATHTODATA = "Data/data.txt";
 
     /**
      * Creates new form MainFrame
@@ -47,7 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
 //                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 //save data to data.txt based on https://stackoverflow.com/questions/9620683/java-fileoutputstream-create-file-if-not-exists
                 try {
-                    FileOutputStream fout = new FileOutputStream("Data/data.txt", false);
+                    FileOutputStream fout = new FileOutputStream(PATHTODATA, false);
                     //save data in format: score1 score2 name1 name2
                     fout.write((person1Score + " " + person2Score + " \"" + person1ButtonTitle + "\" \"" + person2ButtonTitle + "\"").getBytes());
                     fout.close();
@@ -57,7 +60,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         };
         addWindowListener(exitListener);
-        
+
+        //load saved names
+        File f = new File(PATHTODATA);
+        if(f.exists()){
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(new File(PATHTODATA));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            person1Score = Integer.parseInt(scanner.next());
+            person2Score = Integer.parseInt(scanner.next());
+
+            setNewNames(scanner.next().replace("\"", ""), scanner.next().replace("\"", ""));
+            scanner.close();
+        }
+
         updateScore();
         updateNamesOnGui();
     }
@@ -77,8 +96,10 @@ public class MainFrame extends javax.swing.JFrame {
         scoreTitleLabel = new javax.swing.JLabel();
         scoreLabel = new javax.swing.JLabel();
         changeTitlesButton = new javax.swing.JButton();
+        resetScoreButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("CouplesCounter");
         setBackground(new java.awt.Color(255, 105, 97));
 
         mainPanel.setBackground(new java.awt.Color(255, 105, 97));
@@ -114,6 +135,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        resetScoreButton.setText("Reset Score");
+        resetScoreButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetScoreButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -125,12 +153,16 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(person2JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(changeTitlesButton)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(changeTitlesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(resetScoreButton)))
                 .addContainerGap())
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(mainPanelLayout.createSequentialGroup()
@@ -142,8 +174,10 @@ public class MainFrame extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(changeTitlesButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(changeTitlesButton)
+                    .addComponent(resetScoreButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -154,7 +188,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createSequentialGroup()
                     .addGap(43, 43, 43)
                     .addComponent(scoreTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(337, Short.MAX_VALUE)))
+                    .addContainerGap(325, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,9 +201,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -193,6 +225,14 @@ public class MainFrame extends javax.swing.JFrame {
         NameGettingOkCancelDialog nameDialog = new NameGettingOkCancelDialog(this, true, this);
         nameDialog.setVisible(true);
     }//GEN-LAST:event_changeTitlesButtonActionPerformed
+
+    private void resetScoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetScoreButtonActionPerformed
+        // TODO add your handling code here:
+        person1Score = 0;
+        person2Score = 0;
+        
+        updateScore();
+    }//GEN-LAST:event_resetScoreButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,6 +274,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton person1JButton;
     private javax.swing.JButton person2JButton;
+    private javax.swing.JButton resetScoreButton;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreTitleLabel;
     // End of variables declaration//GEN-END:variables

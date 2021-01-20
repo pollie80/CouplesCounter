@@ -29,6 +29,8 @@ public class MainFrame extends javax.swing.JFrame {
     private int person1Score = 0, person2Score = 0;
     private String person1ButtonTitle = "Person 1 remembered", person2ButtonTitle = "Person 2 remembered";
     private final String PATHTODATA = "Data/data.txt";
+    private final String PATHTODATE = "Data/lastdate.txt";
+    private Calendar lastDateCalendar;
 
     /**
      * Creates new form MainFrame
@@ -65,6 +67,16 @@ public class MainFrame extends javax.swing.JFrame {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                //save last date
+                try {
+                    FileOutputStream fout = new FileOutputStream(PATHTODATE, false);
+                    //save data in specific format
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd");
+                    fout.write((dateFormat.format(lastDateCalendar.getTime()).toString()).getBytes());
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         };
         addWindowListener(exitListener);
@@ -74,7 +86,7 @@ public class MainFrame extends javax.swing.JFrame {
         if(f.exists()){
             Scanner scanner = null;
             try {
-                scanner = new Scanner(new File(PATHTODATA));
+                scanner = new Scanner(f);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -99,26 +111,29 @@ public class MainFrame extends javax.swing.JFrame {
                 numQuots += nextWord.length() - nextWord.replaceAll("\"","").length();
             }
 
-            /*nextWord = scanner.next();
-            StringBuilder name2 = new StringBuilder(nextWord);
-            numQuots = name2.toString().length() - name2.toString().replaceAll("\"","").length();;
-            while (numQuots != 2){
-                nextWord = scanner.next();
-                name2.append(" ").append(nextWord);
-                //if other found
-                if (nextWord.contains("\"")){
-                    break;
-                }
+            setNewNames(name1.toString().replace("\"", ""), name2.toString().replace("\"", ""));
+            scanner.close();
+        }
+        //load saved date - format is: dd MM yyyy
+        f = new File(PATHTODATE);
+        if(f.exists()){
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
 
-             */
-
-            setNewNames(name1.toString().replace("\"", ""), name2.toString().replace("\"", ""));
+            lastDateCalendar = Calendar.getInstance();
+            lastDateCalendar.set(scanner.nextInt(), scanner.nextInt()-1, scanner.nextInt());
+//            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//            System.out.println("from file: "+dateFormat.format(lastDateCalendar.getTime()));
             scanner.close();
         }
 
         updateScore();
         updateNamesOnGui();
+        updateDateLabel();
     }
 
     /**
@@ -289,9 +304,8 @@ public class MainFrame extends javax.swing.JFrame {
         scoreLabel1.setText(String.valueOf(person1Score));
 
         //update updated label
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar cal = Calendar.getInstance();
-        lastUpdatedLabel.setText("Last updated: "+dateFormat.format(cal.getTime()));
+        lastDateCalendar = Calendar.getInstance();
+        updateDateLabel();
     }//GEN-LAST:event_person1JButtonActionPerformed
 
     private void person2JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_person2JButtonActionPerformed
@@ -300,9 +314,8 @@ public class MainFrame extends javax.swing.JFrame {
         scoreLabel2.setText(String.valueOf(person2Score));
         
         //update updated label
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar cal = Calendar.getInstance();
-        lastUpdatedLabel.setText("Last updated: "+dateFormat.format(cal.getTime()));
+        lastDateCalendar = Calendar.getInstance();
+        updateDateLabel();
     }//GEN-LAST:event_person2JButtonActionPerformed
 
     private void changeTitlesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeTitlesButtonActionPerformed
@@ -408,6 +421,11 @@ public class MainFrame extends javax.swing.JFrame {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         person1JButton.setText(person1ButtonTitle);
         person2JButton.setText(person2ButtonTitle);
+    }
+
+    private void updateDateLabel(){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        lastUpdatedLabel.setText("Last updated: "+dateFormat.format(lastDateCalendar.getTime()));
     }
     
     public void setNewNames(String title1, String title2){

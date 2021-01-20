@@ -81,19 +81,25 @@ public class MainFrame extends javax.swing.JFrame {
             person1Score = Integer.parseInt(scanner.next());
             person2Score = Integer.parseInt(scanner.next());
 
-            String nextWord = scanner.next();
-            StringBuilder name1 = new StringBuilder(nextWord);
-            int numQuots = name1.toString().length() - name1.toString().replaceAll("\"","").length();
+            StringBuilder name1 = new StringBuilder();
+            int numQuots = 0;
             while (numQuots != 2){
-                nextWord = scanner.next();
+                String nextWord = scanner.next();
                 name1.append(" ").append(nextWord);
-                //if other found
-                if (nextWord.contains("\"")){
-                    break;
-                }
+
+                numQuots += nextWord.length() - nextWord.replaceAll("\"","").length();
             }
 
-            nextWord = scanner.next();
+            StringBuilder name2 = new StringBuilder();
+            numQuots = 0;
+            while (numQuots != 2){
+                String nextWord = scanner.next();
+                name2.append(" ").append(nextWord);
+
+                numQuots += nextWord.length() - nextWord.replaceAll("\"","").length();
+            }
+
+            /*nextWord = scanner.next();
             StringBuilder name2 = new StringBuilder(nextWord);
             numQuots = name2.toString().length() - name2.toString().replaceAll("\"","").length();;
             while (numQuots != 2){
@@ -104,6 +110,8 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
+
+             */
 
             setNewNames(name1.toString().replace("\"", ""), name2.toString().replace("\"", ""));
             scanner.close();

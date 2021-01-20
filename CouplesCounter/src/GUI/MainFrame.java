@@ -81,24 +81,27 @@ public class MainFrame extends javax.swing.JFrame {
             person1Score = Integer.parseInt(scanner.next());
             person2Score = Integer.parseInt(scanner.next());
 
-            StringBuilder name1 = new StringBuilder(scanner.next());
             String nextWord = scanner.next();
-            if (name1.toString().length() - name1.toString().replaceAll("\"","").length() == 1){
-                System.out.println("more than 1 name for player 1");
+            StringBuilder name1 = new StringBuilder(nextWord);
+            int numQuots = name1.toString().length() - name1.toString().replaceAll("\"","").length();
+            while (numQuots != 2){
+                nextWord = scanner.next();
                 name1.append(" ").append(nextWord);
-                while (!nextWord.contains("\"")){
-                    name1.append(" ").append(nextWord);
-                    nextWord = scanner.next();
+                //if other found
+                if (nextWord.contains("\"")){
+                    break;
                 }
             }
+
+            nextWord = scanner.next();
             StringBuilder name2 = new StringBuilder(nextWord);
-            if (name2.toString().length() - name2.toString().replaceAll("\"","").length() == 1){
-                System.out.println("more than 1 name for player 2");
+            numQuots = name2.toString().length() - name2.toString().replaceAll("\"","").length();;
+            while (numQuots != 2){
                 nextWord = scanner.next();
                 name2.append(" ").append(nextWord);
-                while (!nextWord.contains("\"")){
-                    name2.append(" ").append(nextWord);
-                    nextWord = scanner.next();
+                //if other found
+                if (nextWord.contains("\"")){
+                    break;
                 }
             }
 

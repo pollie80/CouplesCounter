@@ -62,7 +62,8 @@ public class MainFrame extends javax.swing.JFrame {
                 try {
                     FileOutputStream fout = new FileOutputStream(PATHTODATA, false);
                     //save data in format: score1 score2 name1 name2
-                    fout.write((person1Score + " " + person2Score + " \"" + person1ButtonTitle + "\" \"" + person2ButtonTitle + "\"").getBytes());
+                    fout.write((person1Score + " " + person2Score + " \"" + person1ButtonTitle + "\" \"" + person2ButtonTitle + "\"" +
+                            "\n" + scoreTypeLabel.getText()).getBytes());
                     fout.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -112,6 +113,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
 
             setNewNames(name1.toString().replace("\"", ""), name2.toString().replace("\"", ""));
+
+            //get title of scoreTypeLabel
+            scanner.nextLine(); //move to next line
+            scoreTypeLabel.setText(scanner.nextLine());
             scanner.close();
         }
         //load saved date - format is: dd MM yyyy
@@ -155,6 +160,7 @@ public class MainFrame extends javax.swing.JFrame {
         lastUpdatedLabel = new javax.swing.JLabel();
         scoreLabel1 = new javax.swing.JLabel();
         scoreLabel2 = new javax.swing.JLabel();
+        scoreTypeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("CouplesCounter");
@@ -221,6 +227,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        scoreTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        scoreTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        scoreTypeLabel.setText("Who remembered the most anniversaries");
+        scoreTypeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scoreTypeLabelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -231,16 +246,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(resetScoreButton)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lastUpdatedLabel)
-                .addContainerGap())
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addComponent(person1JButton, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 13, Short.MAX_VALUE)
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(person1JButton, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 23, Short.MAX_VALUE)
                 .addComponent(person2JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGap(127, 127, 127)
                 .addComponent(scoreLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,6 +260,15 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scoreLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(lastUpdatedLabel)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(scoreTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))))
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(mainPanelLayout.createSequentialGroup()
                     .addGap(97, 97, 97)
@@ -267,7 +287,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(scoreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scoreLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scoreLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(scoreTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(person2JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(person1JButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -345,6 +367,13 @@ public class MainFrame extends javax.swing.JFrame {
         scoreLabel2.setText(String.valueOf(person2Score));
     }//GEN-LAST:event_scoreLabel2MouseClicked
 
+    private void scoreTypeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scoreTypeLabelMouseClicked
+        // TODO add your handling code here:
+        String newLabel = JOptionPane.showInputDialog("Enter the new topic:", scoreTypeLabel.getText());
+        if (newLabel != null)
+            scoreTypeLabel.setText(newLabel);
+    }//GEN-LAST:event_scoreTypeLabelMouseClicked
+
     private int getScore(int player){
         SpinnerNumberModel sModel = new SpinnerNumberModel(0, 0, 30, 1);
         JSpinner spinner = new JSpinner(sModel);
@@ -409,6 +438,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel scoreLabel1;
     private javax.swing.JLabel scoreLabel2;
     private javax.swing.JLabel scoreTitleLabel;
+    private javax.swing.JLabel scoreTypeLabel;
     // End of variables declaration//GEN-END:variables
 
     private void updateScore() {
@@ -433,5 +463,13 @@ public class MainFrame extends javax.swing.JFrame {
         person2ButtonTitle = title2;
         
         updateNamesOnGui();
+    }
+
+    public String getPerson1ButtonTitle(){
+        return person1ButtonTitle;
+    }
+
+    public String getPerson2ButtonTitle() {
+        return person2ButtonTitle;
     }
 }

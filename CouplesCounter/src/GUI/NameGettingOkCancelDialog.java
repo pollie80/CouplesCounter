@@ -36,8 +36,8 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
      */
     public NameGettingOkCancelDialog(java.awt.Frame parent, boolean modal, MainFrame main) {
         super(parent, modal);
-        initComponents();
         mainFrame = main;
+        initComponents();
 
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -102,7 +102,10 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
         person1Label.setLabelFor(person1TextField);
         person1Label.setText("Name of person 1:");
 
-        person1TextField.setText("Alex");
+        if (mainFrame == null || mainFrame.getPerson1ButtonTitle() == null || mainFrame.getPerson1ButtonTitle().isEmpty())
+            person1TextField.setText("Alex");
+        else
+            person1TextField.setText(mainFrame.getPerson1ButtonTitle());
         person1TextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 person1TextFieldFocusGained(evt);
@@ -112,7 +115,10 @@ public class NameGettingOkCancelDialog extends javax.swing.JDialog {
         person2Label.setLabelFor(person2TextField);
         person2Label.setText("Name of person 2:");
 
-        person2TextField.setText("Jamie");
+        if (mainFrame == null || mainFrame.getPerson2ButtonTitle() == null || mainFrame.getPerson2ButtonTitle().isEmpty())
+            person2TextField.setText("Jamie");
+        else
+            person2TextField.setText(mainFrame.getPerson2ButtonTitle());
         person2TextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 person2TextFieldFocusGained(evt);
